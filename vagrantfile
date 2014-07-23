@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
     aws.keypair_name = "Key-Pair-Name"
     aws.instance_type = "t2.micro"
     aws.region = "eu-west-1"
-    aws.ami = "ami-892fe1fe"
+    aws.ami = "ami-892fe1fe"  ## Top of the list Amazon Linux, change accordingly
     aws.security_groups = "Some-Sec-Group"
     override.ssh.username = "ec2-user"
     override.ssh.private_key_path = "~/.ssh/KeyName.pem"
