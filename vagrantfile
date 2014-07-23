@@ -1,0 +1,30 @@
+Vagrant.configure("2") do |config|
+  Vagrant.require_plugin 'vagrant-aws'
+  config.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+  config.vm.box = "Box-Name"
+  config.ssh.pty = true
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = "**************"
+    aws.secret_access_key = "********************"
+    aws.keypair_name = "Key-Pair-Name"
+    aws.instance_type = "t2.micro"
+    aws.region = "eu-west-1"
+    aws.ami = "ami-892fe1fe"
+    aws.security_groups = "Some-Sec-Group"
+    override.ssh.username = "ec2-user"
+    override.ssh.private_key_path = "~/.ssh/KeyName.pem"
+    aws.tags = {
+      'Name' => 'Instance-Name'
+    }
+  end
+
+  config.vm.provision "shell" do |shell|
+   shell.path = "https://s3-eu-west-1.amazonaws.com/acesabe-files/preinstjrepuppet.sh" ## Install Puppet and JRE (from Oracle .rpm d/l)
+  end
+
+  config.vm.provision "puppet" do |puppet|
+    puppet.manifests_path = "manifests"
+    puppet.manifest_file  = "site.pp"
+  end
+end
+
